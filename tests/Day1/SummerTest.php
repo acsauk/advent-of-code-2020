@@ -1,0 +1,58 @@
+<?php
+
+namespace Tests;
+
+use App\Day1\Summer;
+use PHPUnit\Framework\TestCase;
+
+class SummerTest extends TestCase
+{
+    /**
+     * @dataProvider newlineListProvider
+     * @test
+     */
+    public function newlineStringListToIntArray(string $newlineList, array $expectedArray)
+    {
+        self::assertSame($expectedArray, Summer::newlineStringListToIntArray($newlineList));
+    }
+
+    public function newlineListProvider()
+    {
+        return [
+            'List with no blank lines' => [
+                "1
+                 2
+                 3",
+                [1,2,3]
+            ],
+            'List with blank lines' => [
+                "
+                1
+                 2
+                 3
+                 ",
+                [1,2,3]
+            ]
+        ];
+    }
+
+    /** @test */
+    public function findTwoNumbersInArrayThatSumTo()
+    {
+        $numberArray = [6, 2, 8, 10];
+        $expectedResult = [8, 10];
+        $actualResult = Summer::findTwoNumbersInArrayThatSumTo($numberArray, 18);
+
+        self::assertEquals($expectedResult, $actualResult);
+    }
+
+    /** @test */
+    public function findThreeNumbersInArrayThatSumTo()
+    {
+        $numberArray = [6, 2, 8, 10, 1];
+        $expectedResult = [8, 10, 1];
+        $actualResult = Summer::findThreeNumbersInArrayThatSumTo($numberArray, 19);
+
+        self::assertEquals($expectedResult, $actualResult);
+    }
+}

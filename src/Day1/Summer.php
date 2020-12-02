@@ -247,6 +247,6 @@ class Summer
             'Puzzle 1 answer is %s. Puzzle 2 answer is %s',
             $puzzle1Numbers[0] * $puzzle1Numbers[1],
             $puzzle2Numbers[0] * $puzzle2Numbers[1] * $puzzle2Numbers[2]
-        );
+        ), PHP_EOL;
     }
 }

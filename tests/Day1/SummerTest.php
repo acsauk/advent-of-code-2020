@@ -7,35 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class SummerTest extends TestCase
 {
-    /**
-     * @dataProvider newlineListProvider
-     * @test
-     */
-    public function newlineStringListToIntArray(string $newlineList, array $expectedArray)
-    {
-        self::assertSame($expectedArray, Summer::newlineStringListToIntArray($newlineList));
-    }
-
-    public function newlineListProvider()
-    {
-        return [
-            'List with no blank lines' => [
-                "1
-                 2
-                 3",
-                [1,2,3]
-            ],
-            'List with blank lines' => [
-                "
-                1
-                 2
-                 3
-                 ",
-                [1,2,3]
-            ]
-        ];
-    }
-
     /** @test */
     public function findTwoNumbersInArrayThatSumTo()
     {

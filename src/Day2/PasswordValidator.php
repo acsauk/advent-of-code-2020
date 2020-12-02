@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
 
+namespace App\Day2;
+
+use App\Helpers\Convertor;
+
 class PasswordValidator
 {
 
@@ -1005,8 +1009,61 @@ class PasswordValidator
     6-7 s: xsvmsds
     6-7 n: jbncncnn";
 
-    public function split()
+    public static function isPasswordValidV1(string $ruleAndPassword)
     {
-        $rulesAndPasswords = preg_split("/\r\n|\n|\r/", $input);
+        $passwordRule = Convertor::passwordRuleStringToObject($ruleAndPassword);
+
+        return self::letterAppearsAtLeastMinTimes(
+            $passwordRule->getRuleLetter(),
+            $passwordRule->getPassword(),
+            $passwordRule->getMinRule()
+        ) && self::letterAppearsAtMostMaxTimes(
+            $passwordRule->getRuleLetter(),
+            $passwordRule->getPassword(),
+            $passwordRule->getMaxRule()
+        );
+    }
+
+    public static function isPasswordValidV2(string $ruleAndPassword)
+    {
+        $passwordRule = Convertor::passwordRuleStringToObject($ruleAndPassword);
+
+        $position1 = self::letterAppearsAtPosition($passwordRule->getRuleLetter(), $passwordRule->getPassword(), $passwordRule->getMinRule());
+        $position2 = self::letterAppearsAtPosition($passwordRule->getRuleLetter(), $passwordRule->getPassword(), $passwordRule->getMaxRule());
+
+        return (!$position1 && $position2) || ($position1 && !$position2);
+    }
+
+    private static function letterAppearsAtLeastMinTimes(string $letter, string $password, int $minTimes)
+    {
+        return substr_count($password, $letter) >= $minTimes;
+    }
+
+    private static function letterAppearsAtMostMaxTimes(string $letter, string $password, int $maxTimes)
+    {
+        return substr_count($password, $letter) <= $maxTimes;
+    }
+
+    private static function letterAppearsAtPosition(string $letter, string $password, int $position)
+    {
+        return $password[$position - 1] === $letter;
+    }
+
+    public static function solvePuzzle()
+    {
+        $passwordRules = Convertor::newlineStringListToArray(self::PASSWORDS_AND_POLICIES);
+        $validPasswords1 = 0;
+        $validPasswords2 = 0;
+
+        foreach($passwordRules as $passwordRule) {
+            $validPasswords1 += PasswordValidator::isPasswordValidV1($passwordRule) ? 1 : 0;
+            $validPasswords2 += PasswordValidator::isPasswordValidV2($passwordRule) ? 1 : 0;
+        }
+
+        echo sprintf(
+            'Puzzle 3 answer is %s, Puzzle 4 answer is %s',
+            $validPasswords1,
+            $validPasswords2
+        ), PHP_EOL;
     }
 }

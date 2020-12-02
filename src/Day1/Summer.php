@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
+
 namespace App\Day1;
+
+use App\Helpers\Convertor;
 
 class Summer
 {
@@ -205,11 +208,6 @@ class Summer
 1564
 1572";
 
-    public static function newlineStringListToIntArray(string $newlineList): array
-    {
-        return array_map('intval', preg_split("/\r\n|\n|\r/", trim($newlineList)));
-    }
-
     public static function findTwoNumbersInArrayThatSumTo(array $numbersArray, int $sumTotal)
     {
         foreach($numbersArray as $number) {
@@ -240,23 +238,15 @@ class Summer
 
     public static function solvePuzzle()
     {
-        $puzzle1Numbers = self::findTwoNumbersInArrayThatSumTo(
-            self::newlineStringListToIntArray(self::NUMBERS),
-            2020
-        );
+        $arrayOfInts = Convertor::intStringsToIntArray(Convertor::newlineStringListToArray(self::NUMBERS));
 
-        $puzzle2Numbers = self::findThreeNumbersInArrayThatSumTo(
-            self::newlineStringListToIntArray(self::NUMBERS),
-            2020
-        );
+        $puzzle1Numbers = self::findTwoNumbersInArrayThatSumTo($arrayOfInts, 2020);
+        $puzzle2Numbers = self::findThreeNumbersInArrayThatSumTo($arrayOfInts, 2020);
 
         echo sprintf(
             'Puzzle 1 answer is %s. Puzzle 2 answer is %s',
             $puzzle1Numbers[0] * $puzzle1Numbers[1],
-            $puzzle2Numbers[0] * $puzzle2Numbers[1] * $puzzle2Numbers[2],
+            $puzzle2Numbers[0] * $puzzle2Numbers[1] * $puzzle2Numbers[2]
         );
     }
 }
-
-Summer::solvePuzzle();
-
